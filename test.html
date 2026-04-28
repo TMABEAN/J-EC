@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JIBS Innovation Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── CSS Variables ── */
+  :root {
+    --font-sans: 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'DM Mono', monospace;
+
+    --color-background-primary: #FAFAF8;
+    --color-background-secondary: #F3F2EF;
+    --color-background-tertiary: #ECEAE5;
+    --color-text-primary: #1A1A18;
+    --color-text-secondary: #5C5B57;
+    --color-text-tertiary: #9C9A94;
+    --color-border-primary: #D4D2CC;
+    --color-border-secondary: #E2E0DA;
+    --color-border-tertiary: #EBEBЕ5;
+
+    --color-purple: #534AB7;
+    --color-purple-light: #EEEDFE;
+    --color-purple-mid: #AFA9EC;
+    --color-purple-dark: #3C3489;
+
+    --color-teal: #1D9E75;
+    --color-teal-light: #E1F5EE;
+    --color-teal-mid: #5DCAA5;
+    --color-teal-dark: #085041;
+
+    --color-amber: #BA7517;
+    --color-amber-light: #FAEEDA;
+    --color-amber-dark: #633806;
+
+    --color-coral-light: #FAECE7;
+    --color-coral-mid: #F0997B;
+    --color-coral-dark: #712B13;
+
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.10);
+
+    --transition: 0.15s ease;
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: #EEECe6;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Shell ── */
+  .platform-shell {
+    width: 100%;
+    max-width: 900px;
+    border: 0.5px solid var(--color-border-primary);
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    background: var(--color-background-primary);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--color-purple);
+    flex-shrink: 0;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+
+  .nav-tab {
+    font-size: 12px;
+    font-family: var(--font-sans);
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 0.5px solid transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    background: none;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+
+  .nav-tab.active {
+    background: var(--color-background-secondary);
+    border-color: var(--color-border-primary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .nav-tab:hover:not(.active) {
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+  }
+
+  .role-pills {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 0.5px solid var(--color-border-primary);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    background: none;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+
+  .pill:hover { background: var(--color-background-secondary); }
+
+  .pill.active {
+    background: var(--color-purple-light);
+    border-color: var(--color-purple-mid);
+    color: var(--color-purple-dark);
+    font-weight: 500;
+  }
+
+  .pill.coral.active {
+    background: var(--color-coral-light);
+    border-color: var(--color-coral-mid);
+    color: var(--color-coral-dark);
+  }
+
+  .pill.teal.active {
+    background: var(--color-teal-light);
+    border-color: var(--color-teal-mid);
+    color: var(--color-teal-dark);
+  }
+
+  /* ── Main layout ── */
+  .main-area {
+    display: flex;
+    min-height: 520px;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 180px;
+    border-right: 0.5px solid var(--color-border-secondary);
+    padding: 16px 12px;
+    flex-shrink: 0;
+    background: var(--color-background-primary);
+  }
+
+  .sidebar-section { margin-bottom: 20px; }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+    padding: 0 8px;
+  }
+
+  .sidebar-item {
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1px;
+    transition: var(--transition);
+    user-select: none;
+  }
+
+  .sidebar-item.active {
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .sidebar-item:hover:not(.active) {
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+  }
+
+  .dot-status {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-open   { background: var(--color-teal); }
+  .dot-review { background: var(--color-amber); }
+  .dot-closed { background: #888780; }
+
+  /* ── Content area ── */
+  .content {
+    flex: 1;
+    padding: 16px 18px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .content-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  /* ── View toggle ── */
+  .view-toggle {
+    display: flex;
+    border: 0.5px solid var(--color-border-primary);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .view-btn {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    padding: 4px 10px;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .view-btn.active {
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .view-btn:hover:not(.active) { background: var(--color-background-tertiary); }
+
+  /* ── Challenge Grid ── */
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .challenge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .challenge-list .challenge-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .challenge-list .card-main { flex: 1; min-width: 0; }
+  .challenge-list .card-title { margin-bottom: 4px; }
+  .challenge-list .card-footer { flex-direction: row; gap: 12px; }
+
+  /* ── Challenge Card ── */
+  .challenge-card {
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    background: var(--color-background-primary);
+  }
+
+  .challenge-card:hover {
+    border-color: var(--color-border-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .challenge-card.featured { border-color: var(--color-purple-mid); }
+  .challenge-card.featured:hover { border-color: var(--color-purple); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .card-company {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-open    { background: var(--color-teal-light);   color: var(--color-teal-dark); }
+  .badge-review  { background: var(--color-amber-light);  color: var(--color-amber-dark); }
+  .badge-consult { background: var(--color-purple-light); color: var(--color-purple-dark); }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    border: 0.5px solid var(--color-border-secondary);
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .prize {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-teal);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+  }
+
+  /* ── Right Panel ── */
+  .panel-right {
+    width: 220px;
+    border-left: 0.5px solid var(--color-border-secondary);
+    padding: 16px;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .panel-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 12px;
+  }
+
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .step-circle {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .step-done    { background: var(--color-teal-light);   color: var(--color-teal-dark);   border: 0.5px solid var(--color-teal-mid); }
+  .step-active  { background: var(--color-purple-light); color: var(--color-purple-dark); border: 0.5px solid var(--color-purple-mid); }
+  .step-pending { background: var(--color-background-secondary); color: var(--color-text-tertiary); border: 0.5px solid var(--color-border-primary); }
+
+  .step-connector {
+    width: 1px;
+    height: 10px;
+    background: var(--color-border-primary);
+    margin: -2px 0 -2px 9px;
+  }
+
+  .divider-h {
+    border: none;
+    border-top: 0.5px solid var(--color-border-secondary);
+    margin: 14px 0;
+  }
+
+  /* ── Consult note ── */
+  .consult-note {
+    background: var(--color-purple-light);
+    border: 0.5px solid var(--color-purple-mid);
+    border-radius: var(--border-radius-md);
+    padding: 10px;
+    margin-top: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .consult-note:hover { background: #E3E1FC; }
+
+  .consult-note-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-purple);
+    margin-bottom: 4px;
+  }
+
+  .consult-note-text {
+    font-size: 11px;
+    color: var(--color-purple-dark);
+    line-height: 1.5;
+  }
+
+  /* ── Credential bars ── */
+  .credential-bar { margin-top: 10px; }
+
+  .cred-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cred-track {
+    height: 4px;
+    background: var(--color-background-tertiary);
+    border-radius: 2px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .cred-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .fill-purple { background: #7F77DD; width: 0; }
+  .fill-teal   { background: var(--color-teal); width: 0; }
+  .fill-amber  { background: var(--color-amber); width: 0; }
+
+  /* ── Screens ── */
+  .screen { display: none; }
+  .screen.visible { display: flex; }
+
+  /* ── Pitch Detail ── */
+  .pitch-detail {
+    flex: 1;
+    padding: 20px;
+    min-width: 0;
+    overflow-y: auto;
+  }
+
+  .pitch-header { margin-bottom: 16px; }
+
+  .back-btn {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    transition: color var(--transition);
+    border: none;
+    background: none;
+    font-family: var(--font-sans);
+  }
+
+  .back-btn:hover { color: var(--color-text-primary); }
+
+  .pitch-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .pitch-meta {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  /* ── Rubric ── */
+  .rubric-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 0.5px solid var(--color-border-secondary);
+    font-size: 12px;
+  }
+
+  .rubric-row:last-child { border: none; }
+
+  .rubric-label {
+    flex: 1;
+    color: var(--color-text-secondary);
+    min-width: 0;
+  }
+
+  .rubric-track {
+    width: 80px;
+    height: 4px;
+    background: var(--color-background-tertiary);
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .rubric-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--color-purple);
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .score-text {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Feedback box ── */
+  .feedback-box {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--color-purple-light);
+    border: 0.5px solid var(--color-purple-mid);
+    border-radius: var(--border-radius-md);
+  }
+
+  .feedback-from {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-purple);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .feedback-text {
+    font-size: 12px;
+    color: var(--color-purple-dark);
+    line-height: 1.6;
+  }
+
+  .feedback-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* ── Buttons ── */
+  .btn-sm {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 0.5px solid var(--color-border-primary);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-sm:hover {
+    background: var(--color-background-secondary);
+    border-color: var(--color-border-primary);
+  }
+
+  .btn-sm.confirm {
+    background: var(--color-purple-light);
+    border-color: var(--color-purple-mid);
+    color: var(--color-purple-dark);
+    font-weight: 500;
+  }
+
+  .btn-sm.confirm:hover { background: #DDDAF8; }
+
+  .btn-primary {
+    font-size: 12px;
+    font-family: var(--font-sans);
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 0.5px solid var(--color-purple-mid);
+    background: var(--color-purple-light);
+    color: var(--color-purple-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-primary:hover { background: #DDDAF8; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--color-text-primary);
+    color: #fff;
+    font-size: 12px;
+    font-family: var(--font-sans);
+    padding: 8px 16px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── My Pitches screen ── */
+  .my-pitches-content {
+    flex: 1;
+    padding: 16px 18px;
+  }
+
+  .pitch-row {
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .pitch-row:hover {
+    border-color: var(--color-border-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pitch-row-main { flex: 1; min-width: 0; }
+
+  .pitch-row-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .pitch-row-meta {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+  }
+
+  /* ── Profile screen ── */
+  .profile-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .profile-card {
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 16px;
+  }
+
+  .profile-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--color-purple-light);
+    border: 1px solid var(--color-purple-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-purple-dark);
+    flex-shrink: 0;
+    margin-bottom: 12px;
+  }
+
+  .profile-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+
+  .profile-sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .profile-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-secondary);
+    color: var(--color-text-secondary);
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    body { padding: 0; }
+    .platform-shell { border-radius: 0; border: none; }
+    .topbar { flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
+    .nav-tabs { flex-wrap: wrap; }
+    .sidebar { display: none; }
+    .challenge-grid { grid-template-columns: 1fr; }
+    .panel-right { display: none; }
+    .main-area { min-height: auto; }
+    .pitch-detail { padding: 14px; }
+  }
+
+  @media (max-width: 860px) {
+    .panel-right { width: 190px; }
+    .sidebar { width: 160px; }
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen.visible .challenge-card {
+    animation: fadeIn 0.2s ease backwards;
+  }
+
+  .screen.visible .challenge-card:nth-child(1) { animation-delay: 0.05s; }
+  .screen.visible .challenge-card:nth-child(2) { animation-delay: 0.10s; }
+  .screen.visible .challenge-card:nth-child(3) { animation-delay: 0.15s; }
+  .screen.visible .challenge-card:nth-child(4) { animation-delay: 0.20s; }
+</style>
+</head>
+<body>
+
+<div class="platform-shell">
+
+  <!-- ── TOPBAR ── -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      JIBS Innovation Platform
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('challenges', this)">Challenges</button>
+      <button class="nav-tab" onclick="switchTab('my-pitches', this)">My pitches</button>
+      <button class="nav-tab" onclick="switchTab('profile', this)">Profile</button>
+    </div>
+    <div class="role-pills">
+      <button class="pill active" onclick="switchRole('student', this)">Student</button>
+      <button class="pill coral" onclick="switchRole('company', this)">Company</button>
+      <button class="pill teal" onclick="switchRole('centre', this)">JIBS Centre</button>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: Challenges ── -->
+  <div id="screen-challenges" class="screen visible main-area">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Status</div>
+        <div class="sidebar-item active" onclick="filterStatus('open', this)">
+          <span class="dot-status dot-open"></span>Open (8)
+        </div>
+        <div class="sidebar-item" onclick="filterStatus('review', this)">
+          <span class="dot-status dot-review"></span>Under review (3)
+        </div>
+        <div class="sidebar-item" onclick="filterStatus('closed', this)">
+          <span class="dot-status dot-closed"></span>Closed (12)
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Topic</div>
+        <div class="sidebar-item active" onclick="filterTopic('all', this)">All topics</div>
+        <div class="sidebar-item" onclick="filterTopic('sustainability', this)">Sustainability</div>
+        <div class="sidebar-item" onclick="filterTopic('digital', this)">Digital & AI</div>
+        <div class="sidebar-item" onclick="filterTopic('sme', this)">SME growth</div>
+        <div class="sidebar-item" onclick="filterTopic('social', this)">Social impact</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Prize range</div>
+        <div class="sidebar-item" onclick="filterPrize('any', this)">Any amount</div>
+        <div class="sidebar-item" onclick="filterPrize('50k', this)">50k+ SEK</div>
+        <div class="sidebar-item" onclick="filterPrize('100k', this)">100k+ SEK</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="content-header">
+        <div class="content-title" id="challenges-count">8 open challenges</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="view-toggle">
+            <button class="view-btn active" onclick="switchView('grid', this)">Grid</button>
+            <button class="view-btn" onclick="switchView('list', this)">List</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-grid" id="challenge-container">
+
+        <div class="challenge-card featured" data-tags="sustainability,sme,circular" data-prize="75000" data-status="open" onclick="openPitch(this)">
+          <div class="card-top">
+            <div class="card-company">Husqvarna Group</div>
+            <span class="status-badge badge-open">Open</span>
+          </div>
+          <div class="card-title">Circular economy model for used outdoor equipment</div>
+          <div class="card-tags">
+            <span class="tag">Sustainability</span>
+            <span class="tag">SME</span>
+            <span class="tag">Circular</span>
+          </div>
+          <div class="card-footer">
+            <div class="meta">14 days left · 7 pitches</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-tags="digital,b2b" data-prize="50000" data-status="open" onclick="openPitch(this)">
+          <div class="card-top">
+            <div class="card-company">Axis Communications</div>
+            <span class="status-badge badge-open">Open</span>
+          </div>
+          <div class="card-title">AI-driven SME sales onboarding strategy</div>
+          <div class="card-tags">
+            <span class="tag">Digital & AI</span>
+            <span class="tag">B2B</span>
+          </div>
+          <div class="card-footer">
+            <div class="meta">21 days left · 4 pitches</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-tags="regional,talent,sme" data-prize="40000" data-status="review" onclick="openPitch(this)">
+          <div class="card-top">
+            <div class="card-company">Region Jönköping</div>
+            <span class="status-badge badge-review">Under review</span>
+          </div>
+          <div class="card-title">Attracting international talent to Småland SMEs</div>
+          <div class="card-tags">
+            <span class="tag">Regional dev</span>
+            <span class="tag">Talent</span>
+          </div>
+          <div class="card-footer">
+            <div class="meta">Review closes 3 May</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-tags="innovation,retail,social" data-prize="120000" data-status="consult" onclick="openPitch(this)">
+          <div class="card-top">
+            <div class="card-company">IKEA Sweden</div>
+            <span class="status-badge badge-consult">Consulting</span>
+          </div>
+          <div class="card-title">Community-led retail concept for rural areas</div>
+          <div class="card-tags">
+            <span class="tag">Innovation</span>
+            <span class="tag">Retail</span>
+            <span class="tag">Social</span>
+          </div>
+          <div class="card-footer">
+            <div class="meta">Opens after validation</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="panel-right">
+      <div class="panel-title">Your journey</div>
+      <div class="progress-item">
+        <div class="step-circle step-done">✓</div>
+        <div>Profile complete</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="progress-item">
+        <div class="step-circle step-done">✓</div>
+        <div>Pitch submitted</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="progress-item">
+        <div class="step-circle step-active">!</div>
+        <div style="color:var(--color-text-primary);font-weight:500;">Centre feedback</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="progress-item">
+        <div class="step-circle step-pending">4</div>
+        <div>Revise & resubmit</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="progress-item">
+        <div class="step-circle step-pending">5</div>
+        <div>Company selection</div>
+      </div>
+
+      <div class="consult-note" onclick="openPitch()">
+        <div class="consult-note-label">Innovative Centre feedback</div>
+        <div class="consult-note-text">Your pitch on Husqvarna has been reviewed. Click to see detailed feedback before final submission.</div>
+      </div>
+
+      <hr class="divider-h">
+      <div class="panel-title">Credential credits</div>
+      <div class="credential-bar">
+        <div class="cred-label"><span>Entrepreneurship</span><span>68 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-purple" id="bar-purple"></div></div>
+        <div class="cred-label"><span>Strategy</span><span>45 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-teal" id="bar-teal"></div></div>
+        <div class="cred-label"><span>Sustainability</span><span>30 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-amber" id="bar-amber"></div></div>
+      </div>
+    </div>
+
+  </div><!-- /screen-challenges -->
+
+  <!-- ── SCREEN: Pitch Detail ── -->
+  <div id="screen-pitch" class="screen main-area" style="flex-direction:column;">
+    <div style="display:flex;flex:1;min-height:520px;">
+      <div class="pitch-detail">
+        <div class="pitch-header">
+          <button class="back-btn" onclick="closePitch()">← Back to challenges</button>
+          <div class="pitch-title">Circular economy model for used outdoor equipment</div>
+          <div class="pitch-meta">Husqvarna Group · 14 days left</div>
+        </div>
+
+        <div class="section-label">Rubric scoring (company-set)</div>
+        <div class="rubric-row">
+          <span class="rubric-label">Market feasibility</span>
+          <div class="rubric-track"><div class="rubric-fill" data-width="80%"></div></div>
+          <span class="score-text">4 / 5</span>
+        </div>
+        <div class="rubric-row">
+          <span class="rubric-label">Innovation depth</span>
+          <div class="rubric-track"><div class="rubric-fill" data-width="60%"></div></div>
+          <span class="score-text">3 / 5</span>
+        </div>
+        <div class="rubric-row">
+          <span class="rubric-label">Sustainability impact</span>
+          <div class="rubric-track"><div class="rubric-fill" data-width="90%"></div></div>
+          <span class="score-text">5 / 5</span>
+        </div>
+        <div class="rubric-row">
+          <span class="rubric-label">Implementation plan</span>
+          <div class="rubric-track"><div class="rubric-fill" data-width="50%"></div></div>
+          <span class="score-text">2.5 / 5</span>
+        </div>
+        <div class="rubric-row" style="border:none;">
+          <span class="rubric-label">Financial model</span>
+          <div class="rubric-track"><div class="rubric-fill" data-width="70%"></div></div>
+          <span class="score-text">3.5 / 5</span>
+        </div>
+
+        <div class="feedback-box">
+          <div class="feedback-from">JIBS Innovative Centre · Peer review round 1</div>
+          <div class="feedback-text">
+            Strong sustainability angle and market analysis. Your implementation plan needs more specificity — add a 12-month milestone roadmap and define KPIs for circular uptake rate. Consider referencing Husqvarna's existing dealer network as a distribution lever. Innovation section could push further: have you explored product-as-a-service or deposit models?
+          </div>
+          <div class="feedback-actions">
+            <button class="btn-sm" onclick="showToast('Opening Claude for pitch help…')">Ask Claude for help ↗</button>
+            <button class="btn-sm confirm" onclick="showToast('Revision mode activated!')">Revise pitch</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="panel-title">Consultation status</div>
+        <div class="progress-item">
+          <div class="step-circle step-done">✓</div>
+          <div>Pitch submitted</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="progress-item">
+          <div class="step-circle step-done">✓</div>
+          <div>Centre review 1</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="progress-item">
+          <div class="step-circle step-active">!</div>
+          <div style="color:var(--color-text-primary);font-weight:500;">Your revision</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="progress-item">
+          <div class="step-circle step-pending">4</div>
+          <div>Centre review 2</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="progress-item">
+          <div class="step-circle step-pending">5</div>
+          <div>Approved to publish</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="progress-item">
+          <div class="step-circle step-pending">6</div>
+          <div>Company sees pitch</div>
+        </div>
+
+        <hr class="divider-h">
+        <div class="panel-title">Team</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8;">
+          You + 2 members<br>
+          <span style="color:var(--color-text-tertiary);font-size:11px;">All credentials shared equally if not selected</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /screen-pitch -->
+
+  <!-- ── SCREEN: My Pitches ── -->
+  <div id="screen-my-pitches" class="screen main-area">
+    <div class="my-pitches-content">
+      <div class="content-header">
+        <div class="content-title">My pitches</div>
+        <button class="btn-primary" onclick="showToast('New pitch draft created!')">+ New pitch</button>
+      </div>
+
+      <div class="pitch-row" onclick="openPitch()">
+        <div style="flex-shrink:0;">
+          <span class="status-badge badge-open">Open</span>
+        </div>
+        <div class="pitch-row-main">
+          <div class="pitch-row-title">Circular economy model for used outdoor equipment</div>
+          <div class="pitch-row-meta">Husqvarna Group · Submitted 18 Apr</div>
+        </div>
+        <div class="meta" style="white-space:nowrap;">Centre feedback →</div>
+      </div>
+
+      <div class="pitch-row">
+        <div style="flex-shrink:0;">
+          <span class="status-badge badge-review">Draft</span>
+        </div>
+        <div class="pitch-row-main">
+          <div class="pitch-row-title">Sustainable packaging pilot for FMCG distribution</div>
+          <div class="pitch-row-meta">Tetra Pak · Draft saved 22 Apr</div>
+        </div>
+        <div class="meta" style="white-space:nowrap;">Continue →</div>
+      </div>
+
+      <div class="pitch-row">
+        <div style="flex-shrink:0;">
+          <span class="status-badge" style="background:#F3F2EF;color:#9C9A94;">Closed</span>
+        </div>
+        <div class="pitch-row-main">
+          <div class="pitch-row-title">Digital onboarding tool for rural micro-enterprises</div>
+          <div class="pitch-row-meta">Swedbank · Not selected</div>
+        </div>
+        <div class="meta" style="white-space:nowrap;">View →</div>
+      </div>
+    </div>
+
+    <div class="panel-right">
+      <div class="panel-title">Stats</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);line-height:2.2;">
+        Pitches submitted: <strong style="color:var(--color-text-primary);">2</strong><br>
+        In review: <strong style="color:var(--color-text-primary);">1</strong><br>
+        Approved: <strong style="color:var(--color-teal);">0</strong><br>
+        Selected by company: <strong style="color:var(--color-purple);">0</strong>
+      </div>
+      <hr class="divider-h">
+      <div class="panel-title">Credential credits</div>
+      <div class="credential-bar">
+        <div class="cred-label"><span>Entrepreneurship</span><span>68 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-purple" style="width:68%;"></div></div>
+        <div class="cred-label"><span>Strategy</span><span>45 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-teal" style="width:45%;"></div></div>
+        <div class="cred-label"><span>Sustainability</span><span>30 pts</span></div>
+        <div class="cred-track"><div class="cred-fill fill-amber" style="width:30%;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: Profile ── -->
+  <div id="screen-profile" class="screen main-area">
+    <div class="profile-content">
+      <div class="profile-card">
+        <div class="profile-avatar">AS</div>
+        <div class="profile-name">Anna Svensson</div>
+        <div class="profile-sub">MSc Entrepreneurship · JIBS, Year 2</div>
+        <div>
+          <span class="profile-tag">Sustainability</span>
+          <span class="profile-tag">Business Strategy</span>
+          <span class="profile-tag">Digital &amp; AI</span>
+          <span class="profile-tag">SME Growth</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="panel-title">Credential credits</div>
+        <div class="credential-bar">
+          <div class="cred-label"><span>Entrepreneurship</span><span>68 pts</span></div>
+          <div class="cred-track"><div class="cred-fill fill-purple" style="width:68%;"></div></div>
+          <div class="cred-label"><span>Strategy</span><span>45 pts</span></div>
+          <div class="cred-track"><div class="cred-fill fill-teal" style="width:45%;"></div></div>
+          <div class="cred-label"><span>Sustainability</span><span>30 pts</span></div>
+          <div class="cred-track"><div class="cred-fill fill-amber" style="width:30%;"></div></div>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="panel-title">Activity</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:2;">
+          2 pitches submitted · 0 selected · 3 challenges browsed this week
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /platform-shell -->
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── State ── */
+  let currentView = 'grid';
+  let currentStatus = 'all';
+  let currentTopic = 'all';
+  let currentPrize = 'any';
+
+  /* ── Tab switching ── */
+  function switchTab(tab, el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+
+    // Hide all screens
+    document.getElementById('screen-challenges').classList.remove('visible');
+    document.getElementById('screen-pitch').classList.remove('visible');
+    document.getElementById('screen-my-pitches').classList.remove('visible');
+    document.getElementById('screen-profile').classList.remove('visible');
+
+    if (tab === 'challenges') {
+      document.getElementById('screen-challenges').classList.add('visible');
+      animateBars();
+    } else if (tab === 'my-pitches') {
+      document.getElementById('screen-my-pitches').classList.add('visible');
+    } else if (tab === 'profile') {
+      document.getElementById('screen-profile').classList.add('visible');
+    }
+  }
+
+  /* ── Role pills ── */
+  function switchRole(role, el) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    showToast('Switched to ' + (role === 'student' ? 'Student' : role === 'company' ? 'Company' : 'JIBS Centre') + ' view');
+  }
+
+  /* ── View toggle (Grid / List) ── */
+  function switchView(view, el) {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentView = view;
+    const container = document.getElementById('challenge-container');
+    if (view === 'list') {
+      container.className = 'challenge-list';
+    } else {
+      container.className = 'challenge-grid';
+    }
+  }
+
+  /* ── Sidebar filters ── */
+  function filterStatus(status, el) {
+    document.querySelectorAll('.sidebar-section:first-child .sidebar-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    currentStatus = status;
+    applyFilters();
+  }
+
+  function filterTopic(topic, el) {
+    document.querySelectorAll('.sidebar-section:nth-child(2) .sidebar-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    currentTopic = topic;
+    applyFilters();
+  }
+
+  function filterPrize(prize, el) {
+    document.querySelectorAll('.sidebar-section:nth-child(3) .sidebar-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    currentPrize = prize;
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('#challenge-container .challenge-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const status = card.dataset.status;
+      const tags = card.dataset.tags || '';
+      const prize = parseInt(card.dataset.prize) || 0;
+
+      let show = true;
+
+      // Status filter
+      if (currentStatus !== 'all') {
+        if (currentStatus === 'open' && status !== 'open') show = false;
+        if (currentStatus === 'review' && status !== 'review') show = false;
+        if (currentStatus === 'closed' && status !== 'closed') show = false;
+      }
+
+      // Topic filter
+      if (currentTopic !== 'all') {
+        const topicMap = {
+          sustainability: ['sustainability', 'circular', 'social'],
+          digital: ['digital', 'b2b'],
+          sme: ['sme', 'regional', 'talent'],
+          social: ['social', 'retail', 'innovation']
+        };
+        const allowed = topicMap[currentTopic] || [];
+        const hasTag = allowed.some(t => tags.includes(t));
+        if (!hasTag) show = false;
+      }
+
+      // Prize filter
+      if (currentPrize === '50k' && prize < 50000) show = false;
+      if (currentPrize === '100k' && prize < 100000) show = false;
+
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Update count label
+    const statusLabel = currentStatus === 'review' ? 'under review' : currentStatus === 'closed' ? 'closed' : 'open';
+    document.getElementById('challenges-count').textContent = visible + ' ' + statusLabel + ' challenge' + (visible !== 1 ? 's' : '');
+  }
+
+  /* ── Open / close pitch screen ── */
+  function openPitch(card) {
+    document.getElementById('screen-challenges').classList.remove('visible');
+    document.getElementById('screen-pitch').classList.add('visible');
+
+    // Animate rubric bars
+    setTimeout(() => {
+      document.querySelectorAll('.rubric-fill').forEach(fill => {
+        const w = fill.dataset.width || '0%';
+        fill.style.width = w;
+      });
+    }, 100);
+  }
+
+  function closePitch() {
+    document.getElementById('screen-pitch').classList.remove('visible');
+    document.getElementById('screen-challenges').classList.add('visible');
+    animateBars();
+  }
+
+  /* ── Animate credential bars ── */
+  function animateBars() {
+    setTimeout(() => {
+      const p = document.getElementById('bar-purple');
+      const t = document.getElementById('bar-teal');
+      const a = document.getElementById('bar-amber');
+      if (p) p.style.width = '68%';
+      if (t) t.style.width = '45%';
+      if (a) a.style.width = '30%';
+    }, 200);
+  }
+
+  /* ── Toast ── */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ── Init ── */
+  window.addEventListener('DOMContentLoaded', () => {
+    animateBars();
+  });
+</script>
+</body>
+</html>
